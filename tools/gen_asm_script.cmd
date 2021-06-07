@@ -67,4 +67,15 @@ echo #define %%J ^(%%K^)>>"%GAS_SRCDIR%asm_defines_gas.h"
 echo.
 type "%GAS_SRCDIR%asm_defines_nasm.h"
 echo.
+set INFO=
+for /f "tokens=2 delims=[]" %%W in ('ver') do set INFO=%%W
+echo %GAS_OBJDIR% | find "Win32" >nul
+if errorlevel 1 (
+	for /f "tokens=*" %%U in ('"..\..\..\mupen64plus-win32-deps\nasm-2.14.02\x64\nasm.exe" -v') do set INFO=[ %INFO% ]^& echo NASM x64: %%U
+) else (
+	for /f "tokens=*" %%U in ('"..\..\..\mupen64plus-win32-deps\nasm-2.14.02\x86\nasm.exe" -v') do set INFO=[ %INFO% ]^& echo NASM x86: %%U
+)
+if errorlevel 1 echo WTF...
+echo %INFO%
+echo.
 exit /b 0
