@@ -41,11 +41,11 @@ jobs:
           ./.github/workflows/scripts/ci_install_ubuntu_deps.sh --${{ matrix.arch }} --${{ matrix.cc }}
       - name: Build and related stuff, backup binaries
         run: |
-          if [[ "${{ matrix.arch }}" == "x86" ]]; then export BITS="32" CROSS_COMPILE="i686-linux-gnu-" CPU_TUNE="-march=pentium4" PIC="1"; else export BITS="64" CPU_TUNE="-march=nocona"; fi
+          if [[ "${{ matrix.arch }}" == "x86" ]]; then export BITS="32" CROSS_C="i686-linux-gnu-" CPU_TUNE="-march=pentium4" PIC="1"; else export BITS="64" CPU_TUNE="-march=nocona"; fi
           export OPTFLAGS="-O3 -flto ${CPU_TUNE}"
           ORIG="$(pwd)"
-          CC="${CROSS_COMPILE}gcc"
-          CXX="${CROSS_COMPILE}g++"
+          CC="${CROSS_C}gcc"
+          CXX="${CROSS_C}g++"
           if [[ "${{ matrix.cc }}" != "GCC" ]]; then
             CC="clang"
             CXX="clang++"
@@ -120,6 +120,7 @@ jobs:
             mingw-w64-${{ matrix.cross }}-nasm
             mingw-w64-${{ matrix.cross }}-ntldd
             mingw-w64-${{ matrix.cross }}-SDL2
+            mingw-w64-${{ matrix.cross }}-vulkan-headers
             mingw-w64-${{ matrix.cross }}-zlib
       - name: Build and related stuff, backup binaries
         run: |
@@ -140,7 +141,7 @@ jobs:
             echo ""
             make CC="${CC}" CXX="${CXX}" BITS="${BITS}" NEW_DYNAREC="${DYN}" KEYBINDINGS="0" ACCURATE_FPU="${DYN}" -C projects/unix all -j4
             echo ""
-            make BITS="${BITS}" NEW_DYNAREC="${DYN}" KEYBINDINGS="0" ACCURATE_FPU="${DYN}" -C projects/unix install PLUGINDIR="" SHAREDIR="" BINDIR="" MANDIR="" LIBDIR="" APPSDIR="" ICONSDIR="icons" INCDIR="api" LDCONFIG="true" DESTDIR="${ORIG}/pkg/"
+            make BITS="${BITS}" NEW_DYNAREC="${DYN}" KEYBINDINGS="0" ACCURATE_FPU="${DYN}" -C projects/unix install PLUGINDIR="" SHAREDIR="" BINDIR="" MANDIR="" LIBDIR="" APPSDIR="" ICONSDIR="icons" INCDIR="api" DESTDIR="${ORIG}/pkg/"
             echo ""
             ls -gG pkg/mupen64plus${POSTFIX}.dll
             echo ""
