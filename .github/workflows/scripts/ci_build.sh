@@ -10,10 +10,10 @@ export ENV_ARGS="$(echo "${*}" | tr [A-Z] [a-z])"
 for ARG in ${ENV_ARGS}; do
 	case "${ARG}" in
 		clang )
-			export CC_ARG="Clang" CC="clang-15" CXX="clang++-15"
+			export CC_ARG="Clang" CC="clang" CXX="clang++"
 			;;
 		gcc )
-			export CC_ARG="GCC" CC="gcc-13" CXX="g++-13"
+			export CC_ARG="GCC" CC="gcc" CXX="g++"
 			;;
 		makepkg )
 			export MAKE_PKG=1
@@ -49,9 +49,10 @@ fi
 
 if [[ "${ENV_NAME}" == *"Linux"* ]]; then
 	if [[ "${ARCH_ARG}" == "x86" ]]; then export PIC=1 PIE=1; fi
+	if [[ "${CC_ARG}" == "GCC" ]]; then export CC="gcc-12" CXX="g++-12"; else export CC="clang-15" CXX="clang++-15"; fi
 	if [[ ${MULTILIB} -eq 0 ]]; then
 		if [[ "${CC_ARG}" == "GCC" ]]; then
-			if [[ "${ARCH_ARG}" == "x86" ]]; then export CC="i686-linux-gnu-gcc-13" CXX="i686-linux-gnu-g++-13"; fi
+			if [[ "${ARCH_ARG}" == "x86" ]]; then export CC="i686-linux-gnu-gcc-12" CXX="i686-linux-gnu-g++-12"; fi
 		fi
 	fi
 fi
