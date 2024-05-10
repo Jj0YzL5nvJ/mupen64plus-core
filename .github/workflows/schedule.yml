@@ -1,4 +1,4 @@
-name: Core
+name: Core - Scheduled
 
 on:
   schedule:
@@ -31,16 +31,14 @@ jobs:
       - name: Build and related stuff, backup binaries
         run: |
           export PATH="$(pwd)/.github/workflows/scripts:${PATH}"
-          export BUILD_CONFIG="ACCURATE_FPU=0 NEW_DYNAREC=0 SDL_CONFIG=\"sdl-config\"" POSTFIX="-old"
+          export CONFIG_OVERRIDE="ACCURATE_FPU=1 NEW_DYNAREC=1 SDL_CONFIG=\"sdl-config\""
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
-          export BUILD_CONFIG="ACCURATE_FPU=1 NEW_DYNAREC=1 SDL_CONFIG=\"sdl-config\""
-          unset POSTFIX
+          export CONFIG_OVERRIDE="ACCURATE_FPU=1 NEW_DYNAREC=1 SDL_CONFIG=\"sdl2-config\""
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
-          export BUILD_CONFIG="ACCURATE_FPU=0 NEW_DYNAREC=0 SDL_CONFIG=\"sdl2-config\"" POSTFIX="-old"
+          export CONFIG_OVERRIDE="ACCURATE_FPU=0 NEW_DYNAREC=0 SDL_CONFIG=\"sdl-config\" POSTFIX=\"-old\""
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
-          export BUILD_CONFIG="ACCURATE_FPU=1 NEW_DYNAREC=1 SDL_CONFIG=\"sdl2-config\"" MAKE_PKG=1
-          unset POSTFIX
-          ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
+          export CONFIG_OVERRIDE="ACCURATE_FPU=0 NEW_DYNAREC=0 SDL_CONFIG=\"sdl2-config\" POSTFIX=\"-old\""
+          ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }} makepkg
       - name: Upload artifact
         if: matrix.cc == 'GCC'
         uses: actions/upload-artifact@v4
@@ -89,10 +87,9 @@ jobs:
       - name: Build and related stuff, backup binaries
         run: |
           export PATH="$(pwd)/.github/workflows/scripts:${PATH}"
-          export BUILD_CONFIG="ACCURATE_FPU=0 NEW_DYNAREC=0" POSTFIX="-old"
+          export CONFIG_OVERRIDE="ACCURATE_FPU=1 NEW_DYNAREC=1"
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
-          export BUILD_CONFIG="ACCURATE_FPU=1 NEW_DYNAREC=1"
-          unset POSTFIX
+          export CONFIG_OVERRIDE="ACCURATE_FPU=0 NEW_DYNAREC=0 POSTFIX=\"-old\""
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
       - name: Backup dependencies, etc...
         run: |
