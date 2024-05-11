@@ -4,20 +4,20 @@ set -e +u
 if [[ ${#} -lt 2 ]]; then exit 9; fi
 
 unset ARCH_DEP CC_DEP
-export BUILD_DEPS_I386="crossbuild-essential-i386 g++${C_GCC_VER}-i686-linux-gnu gcc${C_GCC_VER}-i686-linux-gnu libc6-i386"
+export BUILD_DEPS_I386="crossbuild-essential-i386 g++${C_GCC_SUFFIX}-i686-linux-gnu gcc${C_GCC_SUFFIX}-i686-linux-gnu libc6-i386"
 export HOTFIX_I386="libatomic1:i386 libgcc-s1:i386 libstdc++6:i386 ${HOTFIX_I386}"
 export ENV_ARGS="$(echo "${*}" | tr [A-Z] [a-z])"
 
 for ARG in ${ENV_ARGS}; do
 	case "${ARG}" in
 		clang )
-			export CC_DEP="clang${C_CLANG_VER}"
+			export CC_DEP="clang${C_CLANG_SUFFIX}"
 			;;
 		gcc )
-			export CC_DEP="g++${C_GCC_VER} gcc${C_GCC_VER}"
+			export CC_DEP="g++${C_GCC_SUFFIX} gcc${C_GCC_SUFFIX}"
 			;;
 		multilib )
-			export BUILD_DEPS_I386="g++${C_GCC_VER}-multilib gcc${C_GCC_VER}-multilib libc6-dev-i386"
+			export BUILD_DEPS_I386="g++${C_GCC_SUFFIX}-multilib gcc${C_GCC_SUFFIX}-multilib libc6-dev-i386"
 			;;
 		x64 )
 			export ARCH_DEP="x64"
