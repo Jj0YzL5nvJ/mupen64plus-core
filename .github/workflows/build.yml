@@ -51,7 +51,7 @@ jobs:
         if: matrix.cc == 'GCC'
         uses: actions/upload-artifact@v4
         with:
-          name: mupen64plus-core-linux-${{ matrix.arch }}-g${{ env.G_REV }}
+          name: ${{ env.PKG_NAME }}
           path: pkg/*.tar.gz
 
   MSYS2:
@@ -104,7 +104,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mupen64plus-core-msys2-${{ matrix.arch }}-g${{ env.G_REV }}
+          name: ${{ env.PKG_NAME }}
           path: pkg/*
 
   MSVC:
@@ -138,7 +138,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mupen64plus-core-msvc-${{ matrix.arch }}-g${{ env.G_REV }}
+          name: ${{ env.PKG_NAME }}
           path: pkg/*
 
   Nightly-build:

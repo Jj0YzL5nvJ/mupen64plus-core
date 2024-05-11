@@ -63,10 +63,11 @@ if [[ "${ENV_NAME}" == *"MINGW"* ]]; then
 fi
 
 export G_REV="$(git rev-parse --short HEAD)"
+export PKG_NAME="${REPO}-${BIN_OS}-${ARCH_ARG}-g${G_REV}"
 if [[ -f "${GITHUB_ENV}" ]]; then
 	set +e
-	grep "G_REV=${G_REV}" "${GITHUB_ENV}" > /dev/null
-	if [[ ${?} -ne 0 ]]; then echo "G_REV=${G_REV}" >> "${GITHUB_ENV}"; fi
+	grep "PKG_NAME=${PKG_NAME}" "${GITHUB_ENV}" > /dev/null
+	if [[ ${?} -ne 0 ]]; then echo "PKG_NAME=${PKG_NAME}" >> "${GITHUB_ENV}"; fi
 	set -e
 fi
 
@@ -108,7 +109,7 @@ else
 	${LDD} "${PKG_PATH}${ARTIFACT}" > ldd.log
 	cat ldd.log
 	echo ""
-	if [[ ${MAKE_PKG} -eq 1 ]]; then tar --owner=0 --group=0 --mode='og-w' -czf "${REPO}-${BIN_OS}-${ARCH_ARG}-g${G_REV}.tar.gz" usr; fi
+	if [[ ${MAKE_PKG} -eq 1 ]]; then tar --owner=0 --group=0 --mode='og-w' -czf "${PKG_NAME}.tar.gz" usr; fi
 fi
 
 exit 0
