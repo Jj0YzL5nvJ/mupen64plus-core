@@ -21,8 +21,8 @@
 
 #include "opencv2/core/version.hpp"
 
-#if CV_MAJOR_VERSION >= 4
-/* this is for opencv >= 4.0 (new style headers + videoio/highgui split) */
+#if CV_MAJOR_VERSION >= 3
+/* this is for opencv >= 3.0 (new style headers + videoio/highgui split) */
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/videoio.hpp>
