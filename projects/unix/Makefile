@@ -342,8 +342,8 @@ ifeq ($(OPENCV), 1)
     ifeq ($(shell $(PKG_CONFIG) --modversion opencv4 2>/dev/null),)
       $(error No OpenCV 4 development libraries found!)
     endif
-    OPENCV_CFLAGS += $(shell $(PKG_CONFIG) --cflags opencv4)
-    OPENCV_LDLIBS += $(shell $(PKG_CONFIG) --libs opencv4)
+    OPENCV_CFLAGS += $(shell $(PKG_CONFIG) --cflags opencv)
+    OPENCV_LDLIBS += $(shell $(PKG_CONFIG) --libs opencv)
   endif
   CFLAGS += $(OPENCV_CFLAGS)
   LDLIBS += $(OPENCV_LDLIBS)
