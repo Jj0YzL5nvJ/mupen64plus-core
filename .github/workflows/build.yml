@@ -32,15 +32,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Get build dependencies and arrange the environment
         run: |
+          export C_CLANG_SUFFIX="-19" C_GCC_SUFFIX="-14"
           export BUILD_DEPS="libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libsdl2-dev libvulkan-dev zlib1g-dev"
           ./.github/workflows/scripts/ci_install_ubuntu_deps.sh ${{ matrix.arch }} ${{ matrix.cc }}
-          echo ""
-          echo "INFO:"
-          apt list clang*
-          apt list g*-multilib
-          apt list g*-i686-linux-gnu
       - name: Build and related stuff, backup binaries
         run: |
+          export C_CLANG_SUFFIX="-19" C_GCC_SUFFIX="-14"
           export PATH="$(pwd)/.github/workflows/scripts:${PATH}"
           export CONFIG_OVERRIDE="ACCURATE_FPU=1 NEW_DYNAREC=1"
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
@@ -94,7 +91,7 @@ jobs:
         run: |
           export PATH="$(pwd)/.github/workflows/scripts:${PATH}" GBC=0 GUI=1
           if [[ "${{ matrix.arch }}" == "x64" ]]; then
-            pacman -S mingw-w64-${{ matrix.cross }}-opencv
+            pacman --noconfirm -S --needed mingw-w64-${{ matrix.cross }}-opencv
             export GBC=1 GUI=0
           fi
           export CONFIG_OVERRIDE="ACCURATE_FPU=1 KEYBINDINGS=${GUI} NEW_DYNAREC=1 OPENCV=${GBC} OSD=${GUI}"
