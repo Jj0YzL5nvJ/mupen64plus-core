@@ -31,7 +31,7 @@ done
 if [[ -z ${ARCH_DEP} ]]; then exit 8; fi
 if [[ -z ${CC_DEP} ]]; then exit 7; fi
 
-sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+#sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 if [[ "${ARCH_DEP}" == "x86" ]]; then sudo dpkg --add-architecture i386; fi
 sudo apt-get update
 sudo apt-get -y install build-essential git nasm pkg-config ${CC_DEP} ${BUILD_DEPS}
