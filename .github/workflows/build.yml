@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Get build dependencies and arrange the environment
         run: |
-          export BUILD_DEPS="libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libsdl2-dev libvulkan-dev zlib1g-dev"
+          export BUILD_DEPS="libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev libopencv-dev libpng-dev libsdl2-dev libvulkan-dev zlib1g-dev"
           ./.github/workflows/scripts/ci_install_ubuntu_deps.sh ${{ matrix.arch }} ${{ matrix.cc }}
           echo ""
           echo "INFO:"
@@ -42,9 +42,9 @@ jobs:
       - name: Build and related stuff, backup binaries
         run: |
           export PATH="$(pwd)/.github/workflows/scripts:${PATH}"
-          export CONFIG_OVERRIDE="ACCURATE_FPU=1 NEW_DYNAREC=1"
+          export CONFIG_OVERRIDE="ACCURATE_FPU=1 NEW_DYNAREC=1 OPENCV=1"
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
-          export CONFIG_OVERRIDE="ACCURATE_FPU=0 NEW_DYNAREC=0 POSTFIX="-old""
+          export CONFIG_OVERRIDE="ACCURATE_FPU=0 NEW_DYNAREC=0 OPENCV=1 POSTFIX="-old""
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }} makepkg
       - name: Upload artifact
         if: matrix.cc == 'GCC'
