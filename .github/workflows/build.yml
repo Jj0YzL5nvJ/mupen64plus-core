@@ -54,15 +54,15 @@ jobs:
       matrix:
         include:
           - cc: GCC
+            arch: x64
+            cross: x86_64
+            env: MINGW64
+            gbc: 0
+          - cc: GCC
             arch: x86
             cross: i686
             env: MINGW32
             gbc: 0
-          - cc: GCC
-            arch: x64
-            cross: x86_64
-            env: MINGW64
-            gbc: 1
           - cc: GCC
             arch: x64
             cross: ucrt-x86_64
