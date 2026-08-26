@@ -20,26 +20,31 @@ jobs:
         include:
           - cc: GCC
             arch: x64
+            gbc: 0
           - cc: GCC
             arch: x86
+            gbc: 0
           - cc: Clang
             arch: x64
+            gbc: 1
           - cc: Clang
             arch: x86
+            gbc: 1
     name: Linux / ${{ matrix.cc }} ${{ matrix.arch }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - name: Get build dependencies and arrange the environment
         run: |
-          export BUILD_DEPS="libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libsdl2-dev libvulkan-dev zlib1g-dev"
+          if [[ ${{ matrix.gbc }} -eq 1 ]]; then export GBC="libopencv-dev"; fi
+          export BUILD_DEPS="libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libsdl2-dev libvulkan-dev zlib1g-dev ${GBC}"
           ./.github/workflows/scripts/ci_install_ubuntu_deps.sh ${{ matrix.arch }} ${{ matrix.cc }}
       - name: Build and related stuff, backup binaries
         run: |
           export PATH="$(pwd)/.github/workflows/scripts:${PATH}"
-          export CONFIG_OVERRIDE="ACCURATE_FPU=1 NEW_DYNAREC=1"
+          export CONFIG_OVERRIDE="ACCURATE_FPU=1 NEW_DYNAREC=1 OPENCV=${{ matrix.gbc }}"
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }}
-          export CONFIG_OVERRIDE="ACCURATE_FPU=0 NEW_DYNAREC=0 POSTFIX="-old""
+          export CONFIG_OVERRIDE="ACCURATE_FPU=0 NEW_DYNAREC=0 OPENCV=${{ matrix.gbc }} POSTFIX="-old""
           ci_build.sh ${{ matrix.arch }} ${{ matrix.cc }} makepkg
       - name: Upload artifact
         if: matrix.cc == 'GCC'
