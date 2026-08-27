@@ -351,9 +351,9 @@ ifeq ($(OPENCV), 1)
     else
       OPENCV_VER = opencv5
     endif
+    OPENCV_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(OPENCV_VER))
+    OPENCV_LDLIBS += $(shell $(PKG_CONFIG) --libs $(OPENCV_VER))
   endif
-  OPENCV_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(OPENCV_VER))
-  OPENCV_LDLIBS += $(shell $(PKG_CONFIG) --libs $(OPENCV_VER))
   CFLAGS += $(OPENCV_CFLAGS)
   LDLIBS += $(OPENCV_LDLIBS)
 endif
